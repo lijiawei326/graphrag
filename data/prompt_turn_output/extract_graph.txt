@@ -1,0 +1,156 @@
+-目标-
+给定一个与此活动潜在相关的文本文档和实体类型列表，从文本中识别出这些类型的所有实体，以及已识别实体之间的所有关系。
+
+-步骤-
+1. 识别所有实体。对于每个已识别的实体，提取以下信息：
+- entity_name: 实体名称，首字母大写
+- entity_type: 以下类型之一：[person, family, social status, event, location, art, literature, health, emotion, interaction]
+- entity_description: 实体属性和活动的全面描述
+将每个实体格式化为 ("entity"{tuple_delimiter}<entity_name>{tuple_delimiter}<entity_type>{tuple_delimiter}<entity_description>)
+
+2. 从步骤1中识别的实体中，识别所有*明确相关*的(source_entity, target_entity)对。
+对于每对相关实体，提取以下信息：
+- source_entity: 源实体的名称，如步骤1中识别的
+- target_entity: 目标实体的名称，如步骤1中识别的
+- relationship_description: 解释为什么你认为源实体和目标实体彼此相关
+- relationship_strength: 1到10之间的整数分数，表示源实体和目标实体之间关系的强度
+将每个关系格式化为 ("relationship"{tuple_delimiter}<source_entity>{tuple_delimiter}<target_entity>{tuple_delimiter}<relationship_description>{tuple_delimiter}<relationship_strength>)
+
+3. 以中文返回步骤1和2中识别的所有实体和关系的单个列表。使用 **{record_delimiter}** 作为列表分隔符。
+
+4. 如果必须翻译成中文，只翻译描述，其他内容不变！
+
+5. 完成后，输出 {completion_delimiter}。
+
+-示例-
+######################
+
+示例 1:
+
+entity_types: [person, family, social status, event, location, art, literature, health, emotion, interaction]
+text:
+猛然从假山石后走过一个人来，向前对凤姐儿说道：“请嫂子安！”凤姐儿猛然见了，将身子望后一退，说道：“这是瑞大爷不是？”贾瑞说道：“嫂子连我也不认得了？不是我是谁！”凤姐儿道：“不是不认得，猛然一见，不想到是大爷到这里来！”贾瑞道：“也是合该我与嫂子有缘。
+
+我方才偷出了席，在这个清净地方略散一散，不想就遇见嫂子也从这里来。
+
+这不是有缘么？”一面说着，一面拿眼睛不住的觑着凤姐儿。
+
+凤姐儿是个聪明人，见他这个光景，如何不猜透八九分呢，因向贾瑞假意含笑道：“怨不得你哥哥时常提你，说你很好。
+
+今日见了，听你说这几句话儿，就知道你是个聪明和气的人了。
+
+这会子我要到太太们那里去，不得和你说话儿，等闲了咱们再说话儿罢！”贾瑞道：“我要到嫂子家里去请安，又恐怕嫂子年轻，不肯轻易见人！”凤姐儿假意笑道：“一家子骨肉，说什么年轻不年轻的话！”贾瑞听了这话，再不想到今日得这个奇遇，那神情光景亦发不堪难看了。
+
+凤姐儿说道：“你快入席去罢，仔细他们拿住罚你酒！”贾瑞听了，身上已木了半边，慢慢的一面走着，一面回过头来看。
+
+凤姐儿故意的把脚步放迟了些儿，见他去远了，心里暗忖道：“这才是知人知面不知心呢，那里有这样禽兽的人呢。
+
+他如果如此，几时叫他死在我的手里，他才知道我的手段！”于是凤姐儿方移步前来。
+
+将转过了一重山坡，见两三个婆子慌慌张张的走来，见了凤姐儿，笑说道：“我们奶奶见二奶奶只是不来，急的了不得，叫奴才们又来请奶奶来了！”凤姐儿说道：“你们奶奶就是这么急脚鬼似的！”凤姐儿慢慢的走着，问：“戏唱了几出了？”那婆子回道：“有八九出了！”说话之间，已来到了天香楼的后门，见宝玉和一群丫头们在那里玩呢。
+
+凤姐儿说道：“宝兄弟，别忒淘气了！”有一个丫头说道：“太太们都在楼上坐着呢，请奶奶就从这边上去罢！”
+
+凤姐儿听了，款步提衣上了楼，见尤氏已在楼梯口等着呢。
+
+尤氏笑说道：“你们娘儿两个忒好了，见了面总舍不得来了。
+
+你明日搬来和他住着罢。
+
+你坐下，我先敬你一钟！”于是凤姐儿在邢王二夫人前告了坐，又在尤氏的母亲前周旋了一遍，仍同尤氏坐在一桌上吃酒听戏。
+
+尤氏叫拿戏单来，让凤姐儿点戏，凤姐儿说道：“亲家太太和太太们在这里，我如何敢点！”
+------------------------
+output:
+("entity"{tuple_delimiter}凤姐儿{tuple_delimiter}person{tuple_delimiter}王熙凤，贾琏之妻，贾府的实际掌权者之一，聪明能干但心机深沉)
+{record_delimiter}
+("entity"{tuple_delimiter}贾瑞{tuple_delimiter}person{tuple_delimiter}贾府远亲，对凤姐儿有非分之想)
+{record_delimiter}
+("entity"{tuple_delimiter}宝玉{tuple_delimiter}person{tuple_delimiter}贾府公子，贾母最疼爱的孙子)
+{record_delimiter}
+("entity"{tuple_delimiter}尤氏{tuple_delimiter}person{tuple_delimiter}贾珍之妻，宁国府当家奶奶)
+{record_delimiter}
+("entity"{tuple_delimiter}邢王二夫人{tuple_delimiter}person{tuple_delimiter}贾赦和贾政的正室夫人)
+{record_delimiter}
+("entity"{tuple_delimiter}尤氏的母亲{tuple_delimiter}person{tuple_delimiter}尤氏的生母)
+{record_delimiter}
+("entity"{tuple_delimiter}贾府{tuple_delimiter}family{tuple_delimiter}四大家族之一，故事主要发生的家族)
+{record_delimiter}
+("entity"{tuple_delimiter}天香楼{tuple_delimiter}location{tuple_delimiter}贾府内的一处建筑，常用来举办宴会)
+{record_delimiter}
+("entity"{tuple_delimiter}假山{tuple_delimiter}location{tuple_delimiter}贾府花园中的一处景观)
+{record_delimiter}
+("entity"{tuple_delimiter}戏{tuple_delimiter}art{tuple_delimiter}贾府宴会上的戏曲表演)
+{record_delimiter}
+("entity"{tuple_delimiter}宴会{tuple_delimiter}event{tuple_delimiter}贾府正在举办的社交活动)
+{record_delimiter}
+("entity"{tuple_delimiter}愤怒{tuple_delimiter}emotion{tuple_delimiter}凤姐儿对贾瑞的厌恶情绪)
+{record_delimiter}
+("entity"{tuple_delimiter}调情{tuple_delimiter}interaction{tuple_delimiter}贾瑞对凤姐儿的轻佻行为)
+{record_delimiter}
+("relationship"{tuple_delimiter}贾瑞{tuple_delimiter}凤姐儿{tuple_delimiter}贾瑞对凤姐儿有非分之想并试图调情{tuple_delimiter}8)
+{record_delimiter}
+("relationship"{tuple_delimiter}凤姐儿{tuple_delimiter}贾瑞{tuple_delimiter}凤姐儿厌恶贾瑞的轻佻行为并暗自发狠{tuple_delimiter}9)
+{record_delimiter}
+("relationship"{tuple_delimiter}凤姐儿{tuple_delimiter}尤氏{tuple_delimiter}两人关系亲密，经常一起参加社交活动{tuple_delimiter}7)
+{record_delimiter}
+("relationship"{tuple_delimiter}凤姐儿{tuple_delimiter}邢王二夫人{tuple_delimiter}凤姐儿在家族长辈面前保持礼节{tuple_delimiter}6)
+{record_delimiter}
+("relationship"{tuple_delimiter}凤姐儿{tuple_delimiter}宝玉{tuple_delimiter}凤姐儿以嫂子身份关心宝玉{tuple_delimiter}5)
+{record_delimiter}
+("relationship"{tuple_delimiter}凤姐儿{tuple_delimiter}天香楼{tuple_delimiter}凤姐儿前往天香楼参加宴会{tuple_delimiter}6)
+{record_delimiter}
+("relationship"{tuple_delimiter}贾瑞{tuple_delimiter}假山{tuple_delimiter}贾瑞在假山处偶遇凤姐儿{tuple_delimiter}5)
+{record_delimiter}
+("relationship"{tuple_delimiter}凤姐儿{tuple_delimiter}戏{tuple_delimiter}凤姐儿参与点戏的社交活动{tuple_delimiter}4)
+{record_delimiter}
+("relationship"{tuple_delimiter}尤氏{tuple_delimiter}戏{tuple_delimiter}尤氏主持点戏环节{tuple_delimiter}5)
+{completion_delimiter}
+#############################
+
+
+示例 2:
+
+entity_types: [person, family, social status, event, location, art, literature, health, emotion, interaction]
+text:
+因什么只管来？”凤姐儿遂将九月里宁府园子里遇见他的光景，他说的话，都告诉了平儿。
+
+平儿说道：“癞蛤蟆想天鹅肉吃，没人伦的混帐东西，起这个念头，叫他不得好死！”凤姐儿道：“等他来了，我自有道理！”不知贾瑞来时作何光景，且听下回分解。
+------------------------
+output:
+("entity"{tuple_delimiter}凤姐儿{tuple_delimiter}person{tuple_delimiter}王熙凤，贾府的实际掌权者，性格泼辣果断，管理家务严明)
+{record_delimiter}
+("entity"{tuple_delimiter}平儿{tuple_delimiter}person{tuple_delimiter}王熙凤的贴身丫鬟和心腹，聪明能干，常协助凤姐处理家务)
+{record_delimiter}
+("entity"{tuple_delimiter}贾瑞{tuple_delimiter}person{tuple_delimiter}贾府远亲，品行不端，对凤姐有非分之想)
+{record_delimiter}
+("entity"{tuple_delimiter}宁府园子{tuple_delimiter}location{tuple_delimiter}贾府宁国府的花园，故事发生的场景之一)
+{record_delimiter}
+("entity"{tuple_delimiter}癞蛤蟆想天鹅肉吃{tuple_delimiter}literature{tuple_delimiter}俗语，比喻不自量力或妄想得到不可能的东西)
+{record_delimiter}
+("entity"{tuple_delimiter}没人伦的混帐东西{tuple_delimiter}emotion{tuple_delimiter}平儿对贾瑞的愤怒和鄙视)
+{record_delimiter}
+("entity"{tuple_delimiter}起这个念头{tuple_delimiter}interaction{tuple_delimiter}贾瑞对凤姐的非分之想)
+{record_delimiter}
+("entity"{tuple_delimiter}叫他不得好死{tuple_delimiter}emotion{tuple_delimiter}平儿对贾瑞的诅咒和愤怒)
+{record_delimiter}
+("relationship"{tuple_delimiter}凤姐儿{tuple_delimiter}平儿{tuple_delimiter}主仆关系，凤姐儿是平儿的主子，平儿是凤姐儿的贴身丫鬟{tuple_delimiter}9)
+{record_delimiter}
+("relationship"{tuple_delimiter}凤姐儿{tuple_delimiter}贾瑞{tuple_delimiter}贾瑞对凤姐有非分之想，凤姐对贾瑞不屑一顾{tuple_delimiter}5)
+{record_delimiter}
+("relationship"{tuple_delimiter}平儿{tuple_delimiter}贾瑞{tuple_delimiter}平儿对贾瑞的行为感到愤怒和鄙视{tuple_delimiter}6)
+{record_delimiter}
+("relationship"{tuple_delimiter}贾瑞{tuple_delimiter}宁府园子{tuple_delimiter}贾瑞在宁府园子遇见凤姐儿{tuple_delimiter}4)
+{record_delimiter}
+("relationship"{tuple_delimiter}凤姐儿{tuple_delimiter}宁府园子{tuple_delimiter}凤姐儿在宁府园子遇见贾瑞{tuple_delimiter}4)
+{completion_delimiter}
+#############################
+
+
+
+-真实数据-
+######################
+entity_types: [person, family, social status, event, location, art, literature, health, emotion, interaction]
+text: {input_text}
+######################
+output:

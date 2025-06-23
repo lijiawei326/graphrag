@@ -1,0 +1,23 @@
+{
+  "domain": "红楼梦文学小说",
+  "language": "中文",
+  "chunk_size": 1200,
+  "overlap": 100,
+  "limit": 5,
+  "selection_method": "random",
+  "generated_at": 1750610129.237239,
+  "files": [
+    {
+      "name": "extract_graph.txt",
+      "description": "实体提取提示词"
+    },
+    {
+      "name": "summarize_descriptions.txt",
+      "description": "实体摘要提示词"
+    },
+    {
+      "name": "community_report_graph.txt",
+      "description": "社区摘要提示词"
+    }
+  ]
+}
