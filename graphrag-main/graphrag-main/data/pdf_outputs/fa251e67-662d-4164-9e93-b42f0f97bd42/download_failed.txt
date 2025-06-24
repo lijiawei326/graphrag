@@ -1,0 +1,4 @@
+下载失败时间: 2025-06-22T22:32:36.124497
+本地路径: C:\Users\lijiawei\Desktop\ai-agent\MinerU\ouput\fa251e67-662d-4164-9e93-b42f0f97bd42
+请求路径: C:/Users/lijiawei/Desktop/ai-agent/MinerU/ouput/fa251e67-662d-4164-9e93-b42f0f97bd42
+错误信息: 状态码 404
